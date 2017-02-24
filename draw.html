@@ -1,0 +1,65 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+        <!--<link rel="stylesheet" href="css/main.css"> -->
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+        <svg id="canvas"></svg>
+
+        <script src="./jquery-3.1.1.min.js"></script>
+        <script type="text/javascript">
+        	
+        	$(document).ready(function() {
+        		var canvas = $("#canvas");
+        		var winHeight = $(window).height();
+        		var winWidth = $(window).width();
+
+        		canvas.attr("height", winHeight);
+        		canvas.attr("width", winWidth);
+
+        		var centerX = Math.floor(winWidth / 2);	
+        		var centerY = Math.floor(winHeight / 2);
+
+                var line = document.createElementNS("http://www.w3.org/2000/svg", 'line'); //Create a path in SVG's namespace
+                line.setAttribute("x2",centerX);
+                line.setAttribute("y1",centerY);
+                line.setAttribute("y2",centerY);
+                line.setAttribute("x1",centerX);
+                line.setAttribute("id","line"); 
+                line.style.stroke = "#000"; //Set stroke colour
+                line.style.strokeWidth = "2px"; //Set stroke width
+                canvas.append(line);
+
+        		window.onresize = function(event) {
+				    canvas.attr("height", $(window).height());
+        		  canvas.attr("width", $(window).width());        			
+				};
+
+        		$(document).mousemove(function(event){
+        			var mouseX = event.pageX;
+        			var mouseY = event.pageY;
+                    line.setAttribute("x2", mouseX);
+                    line.setAttribute("y2", mouseY);
+        		});
+			});
+
+        </script>
+    </body>
+</html>
