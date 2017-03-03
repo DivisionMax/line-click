@@ -39,16 +39,21 @@
                 if(event.keyCode == 81 && event.shiftKey) {
                     shape_type = SHAPE_LINE;
                     console.log("Line is selected.");
+                    shape_type_previous = shape_type;
+                shape_object.remove();
+                shape_object = null;
+                addShape(centerX, centerY);
                 }
                 //Crtl + a
                 if(event.keyCode == 69 && event.shiftKey) {
                     shape_type = SHAPE_CIRCLE;
                     console.log("Circle is selected.");
-
-                }
                 shape_type_previous = shape_type;
+                shape_object.remove();
                 shape_object = null;
                 addShape(centerX, centerY);
+                }
+
             }, false);
 
             var centerX;
