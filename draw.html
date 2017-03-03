@@ -25,74 +25,96 @@
 
         <script src="./jquery-3.1.1.min.js"></script>
         <script type="text/javascript">
-        	
-        	$(document).ready(function() {
-        		var canvas = $("#canvas");
-        		var winHeight = $(window).height();
-        		var winWidth = $(window).width();
 
-        		canvas.attr("height", winHeight);
-        		canvas.attr("width", winWidth);
+        $(document).ready(function() {
 
-        		var centerX = Math.floor(winWidth / 2);	
-        		var centerY = Math.floor(winHeight / 2);
+            const SHAPE_LINE = "line";
+            const SHAPE_CIRCLE = "circle";
 
-                var line;
-                var circle;
-                // line = document.createElementNS("http://www.w3.org/2000/svg", 'line'); //Create a path in SVG's namespace
-                circle = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
-                circle.setAttribute("cx", centerX);
-                circle.setAttribute("cx", centerY);
-                circle.setAttribute("r", 0);
-                circle.setAttribute("fill", "none");
-                circle.style.stroke = "#000"; //Set stroke colour
-                circle.style.strokeWidth = "2px"; //Set stroke width
-                canvas.append(circle);
+            var shape_type = SHAPE_LINE; //default avlue
+            var shape_type_previous = shape_type;
+            //Enabling switching between shapes
+            document.addEventListener('keydown', function(event) {
+                //Ctrl + q
+                if(event.keyCode == 81 && event.shiftKey) {
+                    shape_type = SHAPE_LINE;
+                    console.log("Line is selected.");
+                }
+                //Crtl + a
+                if(event.keyCode == 69 && event.shiftKey) {
+                    shape_type = SHAPE_CIRCLE;
+                    console.log("Circle is selected.");
 
-                // line.setAttribute("x2",centerX);
-                // line.setAttribute("y1",centerY);
-                // line.setAttribute("y2",centerY);
-                // line.setAttribute("x1",centerX);
-                // line.style.stroke = "#000"; //Set stroke colour
-                // line.style.strokeWidth = "2px"; //Set stroke width
-                // canvas.append(line);
-                
-        		window.onresize = function(event) {
-				    canvas.attr("height", $(window).height());
-        		  canvas.attr("width", $(window).width());        			
-				};
+                }
+                shape_type_previous = shape_type;
+                shape_object = null;
+                addShape(centerX, centerY);
+            }, false);
 
-        		$(document).mousemove(function(event){
-        			var mouseX = event.pageX;
-        			var mouseY = event.pageY;
-                    circle.setAttribute("r", Math.abs(mouseX - centerX));
+            var centerX;
+            var centerY;
 
+            var canvas = $("#canvas");
+            var shape_object;
 
-           //          line.setAttribute("x2", mouseX);
-           //          line.setAttribute("y2", mouseY);
-        		});
+            setCenter();
+            addShape(centerX, centerY); //default to center
 
-                $(document).click(function(event){
-                    var mouseX = event.pageX;
-                    var mouseY = event.pageY;
-                //     line = document.createElementNS("http://www.w3.org/2000/svg", 'line'); //Create a path in SVG's namespace
-                // line.setAttribute("x2",centerX);
-                // line.setAttribute("y1",centerY);
-                // line.setAttribute("y2",centerY);
-                // line.setAttribute("x1",centerX);
-                // line.style.stroke = "#000"; //Set stroke colour
-                // line.style.strokeWidth = "2px"; //Set stroke width
-                // canvas.append(line);
-                circle = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
-                circle.setAttribute("cx", centerX);
-                circle.setAttribute("cx", centerY);
-                 circle.setAttribute("fill", "none");
-                circle.setAttribute("r", 0);
-                circle.style.stroke = "#000"; //Set stroke colour
-                circle.style.strokeWidth = "2px"; //Set stroke width
-                canvas.append(circle);
-                });
-			});
+            // Window initialization and window resize events
+            function setCenter(){
+                var winHeight = $(window).height();
+                var winWidth = $(window).width();
+
+                canvas.attr("height", winHeight);
+                canvas.attr("width", winWidth);
+
+                centerX = Math.floor(winWidth / 2); 
+                centerY = Math.floor(winHeight / 2);
+            }
+
+            window.onresize = function(event) {
+                setCenter(); 			
+			};
+
+            function redrawShape(mouseX, mouseY) {
+                if (shape_type === SHAPE_CIRCLE ){
+                    shape_object.setAttribute("r", Math.abs(mouseX - centerX));
+                }
+
+                if (shape_type === SHAPE_LINE ){
+                    shape_object.setAttribute("x2", mouseX);
+                    shape_object.setAttribute("y2", mouseY);
+              }
+            }
+
+                // Add the selected shape when the user clicks or the page instantiates
+            function addShape(mouseX, mouseY) {
+                shape_object = document.createElementNS("http://www.w3.org/2000/svg", shape_type); //Create a path in SVG's namespace
+                if (shape_type === SHAPE_CIRCLE ){
+                    shape_object.setAttribute("cx", centerX);
+                    shape_object.setAttribute("cy", centerY);
+                    shape_object.setAttribute("fill", "none");
+                    shape_object.setAttribute("r", 0);                
+                }
+                if (shape_type === SHAPE_LINE ){
+                    shape_object.setAttribute("x1",centerX);
+                    shape_object.setAttribute("y1",centerY);
+                    shape_object.setAttribute("x2",centerX);
+                    shape_object.setAttribute("y2",centerY);
+                }
+                shape_object.style.stroke = "#000";
+                shape_object.style.strokeWidth = "2px";
+                canvas.append(shape_object);
+                }
+            // Mouse moves must redraw the shape
+    		$(document).mousemove(function(event){
+                redrawShape(event.pageX, event.pageY);
+            });
+            // Mouse clicks set a shape
+            $(document).click(function(event){
+                addShape(event.pageX, event.pageY);
+            });
+    	});
 
         </script>
     </body>
