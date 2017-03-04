@@ -28,32 +28,39 @@
 
         $(document).ready(function() {
 
+            alert ("'Ctrl + q' selects a line. 'Ctrl + e' selects a circle");
+
             const SHAPE_LINE = "line";
             const SHAPE_CIRCLE = "circle";
 
             var shape_type = SHAPE_LINE; //default avlue
             var shape_type_previous = shape_type;
+            var redraw = false;
             //Enabling switching between shapes
             document.addEventListener('keydown', function(event) {
-                //Ctrl + q
-                if(event.keyCode == 81 && event.shiftKey) {
-                    shape_type = SHAPE_LINE;
-                    console.log("Line is selected.");
-                    shape_type_previous = shape_type;
-                shape_object.remove();
-                shape_object = null;
-                addShape(centerX, centerY);
+                if (event.shiftKey){
+                        //Ctrl + q
+                        if(event.keyCode == 81) {
+                            shape_type_previous = shape_type;
+                            shape_type = SHAPE_LINE;
+                            redraw = true;
+                            console.log("Line is selected.");
+                        }
+                        //Crtl + e
+                        if(event.keyCode == 69) {
+                            shape_type_previous = shape_type;
+                            shape_type = SHAPE_CIRCLE;
+                            redraw = true;
+                            console.log("Circle is selected.");
+                        }
+                    
+                    if (redraw){
+                        shape_object.remove();
+                        addShape(centerX, centerY);
+                        redraw = false;
+                    }
+                    
                 }
-                //Crtl + a
-                if(event.keyCode == 69 && event.shiftKey) {
-                    shape_type = SHAPE_CIRCLE;
-                    console.log("Circle is selected.");
-                shape_type_previous = shape_type;
-                shape_object.remove();
-                shape_object = null;
-                addShape(centerX, centerY);
-                }
-
             }, false);
 
             var centerX;
