@@ -19,8 +19,8 @@
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-
-        <!-- Add your site or application content here -->
+    <h1>Draw Shapes</h1>
+    <p id="selection"></p>
         <svg id="canvas"></svg>
 
         <script src="./jquery-3.1.1.min.js"></script>
@@ -29,7 +29,6 @@
         $(document).ready(function() {
 
             // alert ("'Ctrl + q' selects a line. 'Ctrl + e' selects a circle");
-            //TODO - Show which shape is selected.
             //TODO - Allow selecting no shape.
             //TODO - Colours picker
             //Squares?
@@ -48,14 +47,14 @@
                             shape_type_previous = shape_type;
                             shape_type = SHAPE_LINE;
                             redraw = true;
-                            console.log("Line is selected.");
+                            selection.textContent = 'Line is selected.';
                         }
                         //Crtl + e
                         if(event.keyCode == 69) {
                             shape_type_previous = shape_type;
                             shape_type = SHAPE_CIRCLE;
                             redraw = true;
-                            console.log("Circle is selected.");
+                            selection.textContent = 'Circle is selected.';
                         }
                     
                     if (redraw){
@@ -71,9 +70,11 @@
             var centerY;
 
             var canvas = $("#canvas");
+            var selection = document.getElementById('selection');
             var shape_object;
 
             setCenter();
+            selection.textContent = 'Line is selected.';
             addShape(centerX, centerY); //default to center
 
             // Window initialization and window resize events
