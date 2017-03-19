@@ -8,3 +8,12 @@
 	left: 20px;
 	top: 20px;
 }
+
+#colour-preview{
+	width:20px;
+	height:20px;
+}
+
+.inline{
+	display: inline-block;
+}

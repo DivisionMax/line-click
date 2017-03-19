@@ -23,6 +23,11 @@
     <h1>Draw Shapes</h1>
     <p>'Shift + Q' is a line, 'Shift + E' is a circle, 'Shift + R' is no shape </p>
     <p id="selection"></p>
+    <div>
+        <div class="inline" id="colour-preview"></div>
+        <p class="inline" id="colour-rgb"></p>
+    </div>
+    
     </div>
         <svg id="canvas"></svg>
 
@@ -41,7 +46,10 @@
             var shape_type = SHAPE_LINE; //default avlue
             var shape_type_previous = shape_type;
             var redraw = false;
+            var rgb = [255, 0, 168];
 
+            var rgbInfo = document.getElementById('colour-rgb');
+            rgbInfo.innerText = rgb[0] + " " + rgb[1] + " " + rgb[2];
             //Enabling switching between shapes
             document.addEventListener('keydown', function(event) {
                 if (event.shiftKey){
@@ -82,6 +90,8 @@
 
             var canvas = $("#canvas");
             var selection = document.getElementById('selection');
+            var colourPreview = document.getElementById('colour-preview');
+            colourPreview.style.backgroundColor = "green";
             var shape_object;
 
             setCenter();
@@ -134,7 +144,7 @@
                     shape_object.setAttribute("y2",centerY);
                 }
 
-                shape_object.style.stroke = "#000";
+                shape_object.style.stroke = "rgb(255,23,25)";
                 shape_object.style.strokeWidth = "2px";
                 canvas.append(shape_object);
                 }
@@ -142,7 +152,6 @@
                 }
             // Mouse moves must redraw the shape
     		$(document).mousemove(function(event){
-                console.log("Mouse-move: " + event.pageX + " " + event.pageY);
                 redrawShape(event.pageX, event.pageY);
             });
             // Mouse clicks set a shape
